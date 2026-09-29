@@ -52,8 +52,8 @@ if submit:
             
             # --- ALINEACIÓN DE DATOS DE CONTACTO ---
             x_datos = 365       
-            y_inicial = 115  # Ajustado a 115 para bajar todo el bloque y alinearlo con los íconos
-            espaciado = 26   # Separación exacta entre cada renglón
+            y_inicial = 100  # Altura inicial (primer renglón). Súbelo o bájalo para mover todo el bloque.
+            espaciado = 26   # Separación exacta entre cada renglón.
             
             # Teléfono fijo hardcodeado (ya no se pide en el formulario)
             draw.text((x_datos, y_inicial), "921 215-7017/18/21", font=fuente_datos, fill="black")
