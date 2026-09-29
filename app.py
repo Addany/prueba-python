@@ -12,7 +12,7 @@ st.write("Complete sus datos para generar la firma institucional con el formato 
 with st.form("formulario_firma"):
     nombre = st.text_input("Nombre completo", placeholder="Ej. Ing. Arturo Villegas Garcia")
     puesto = st.text_input("Puesto de trabajo", placeholder="Ej. Coordinador de sistemas")
-    telefono_movil_ext = st.text_input("Teléfono móvil o Extensión", placeholder="Ej. 560 o 921 123 4567")
+    telefono_movil_ext = st.text_input("Teléfono móvil o Extensión", placeholder="Ej. 9218378907 EXT#604")
     correo = st.text_input("Correo corporativo", placeholder="Ej. sistemas@grupoayasa.com")
     
     submit = st.form_submit_button("Generar Firma")
