@@ -27,13 +27,18 @@ with st.form("formulario_firma"):
     submit = st.form_submit_button("Generar Firma")
 
 if submit:
-    # Validaciones independientes para cada campo faltante
+    # Validación simultánea para detectar exactamente qué campos faltan
+    campos_faltantes = []
     if not nombre:
-        st.warning("Por favor, ingrese el **Título y Nombre completo**.")
-    elif not puesto:
-        st.warning("Por favor, ingrese el **Puesto de trabajo**.")
-    elif not correo:
-        st.warning("Por favor, ingrese el **Correo corporativo**.")
+        campos_faltantes.append("Título y Nombre completo")
+    if not puesto:
+        campos_faltantes.append("Puesto de trabajo")
+    if not correo:
+        campos_faltantes.append("Correo corporativo")
+
+    if campos_faltantes:
+        # Muestra una advertencia detallada indicando todos los campos que el usuario dejó vacíos
+        st.warning(f"Por favor, complete los siguientes campos obligatorios: **{', '.join(campos_faltantes)}**.")
     else:
         try:
             if not os.path.exists("plantilla_base.png"):
