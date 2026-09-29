@@ -8,12 +8,19 @@ st.set_page_config(page_title="Generador de Firmas - Grupo AYASA", page_icon="�
 st.title("Generador de Firma de Correo")
 st.write("Complete sus datos para generar la firma institucional con el formato oficial.")
 
-# Formulario (ya sin el teléfono fijo, porque se agregó al código como texto fijo)
+# Formulario con los campos separados para teléfono y extensión
 with st.form("formulario_firma"):
-    nombre = st.text_input("Nombre completo", placeholder="Ej. Ing. Arturo Villegas Garcia")
-    puesto = st.text_input("Puesto de trabajo", placeholder="Ej. Coordinador de sistemas")
-    telefono_movil_ext = st.text_input("Teléfono móvil o Extensión", placeholder="Ej. 9218378907 EXT#604")
-    correo = st.text_input("Correo corporativo", placeholder="Ej. sistemas@grupoayasa.com")
+    nombre = st.text_input("Nombre completo", placeholder="Ej. Ing. Addan Yerena Lopez")
+    puesto = st.text_input("Puesto de trabajo", placeholder="Ej. Auxiliar de Sistemas")
+    
+    # Campos separados para número y extensión
+    col1, col2 = st.columns(2)
+    with col1:
+        telefono_movil = st.text_input("Número de serie / Celular", placeholder="Ej. 9211722326")
+    with col2:
+        num_extension = st.text_input("Número de Extensión", placeholder="Ej. 530")
+        
+    correo = st.text_input("Correo corporativo", placeholder="Ej. adyerenal.pz@gmail.com")
     
     submit = st.form_submit_button("Generar Firma")
 
@@ -36,33 +43,41 @@ if submit:
                 st.stop()
 
             # --- CENTRADO DINÁMICO (Nombre y Puesto) ---
-            # El panel derecho de la firma va aprox. de X=380 a X=797. Su centro visual es ~588.
             centro_x = 588
             
-            # Calculamos el ancho de las palabras para centrarlas perfectamente
             ancho_nombre = draw.textlength(nombre, font=fuente_nombre)
             ancho_puesto = draw.textlength(puesto, font=fuente_puesto)
             
             x_nombre = centro_x - (ancho_nombre / 2)
             x_puesto = centro_x - (ancho_puesto / 2)
 
-            # Imprimimos el nombre y el puesto en sus nuevas posiciones centradas
             draw.text((x_nombre, 30), nombre, font=fuente_nombre, fill="black")
             draw.text((x_puesto, 60), puesto, font=fuente_puesto, fill="black")
             
+            # --- CONSTRUCCIÓN DEL SEGUNDO RENGLÓN AUTOMÁTICO ---
+            # Si el usuario llena ambos o solo uno, se arma el texto combinando el número y la extensión con #EXT
+            if telefono_movil and num_extension:
+                texto_telefono_ext = f"{telefono_movil} #EXT {num_extension}"
+            elif telefono_movil:
+                texto_telefono_ext = telefono_movil
+            elif num_extension:
+                texto_telefono_ext = f"#EXT {num_extension}"
+            else:
+                texto_telefono_ext = ""
+
             # --- ALINEACIÓN DE DATOS DE CONTACTO ---
             x_datos = 365       
-            y_inicial = 103 # Altura inicial (primer renglón). Súbelo o bájalo para mover todo el bloque.
-            espaciado = 26   # Separación exacta entre cada renglón.
+            y_inicial = 103 
+            espaciado = 26 
             
-            # Teléfono fijo hardcodeado (ya no se pide en el formulario)
+            # 1. Teléfono fijo corporativo (fijo)
             draw.text((x_datos, y_inicial), "921 215-7017/18/21", font=fuente_datos, fill="black")
             
-            # Extensión / Móvil
-            if telefono_movil_ext:
-                draw.text((x_datos, y_inicial + espaciado), telefono_movil_ext, font=fuente_datos, fill="black")
+            # 2. Celular/Serie + #EXT automático
+            if texto_telefono_ext:
+                draw.text((x_datos, y_inicial + espaciado), texto_telefono_ext, font=fuente_datos, fill="black")
                 
-            # Correo y Web
+            # 3. Correo y Web
             draw.text((x_datos, y_inicial + (espaciado * 2)), correo, font=fuente_datos, fill="black")
             draw.text((x_datos, y_inicial + (espaciado * 3)), "www.grupoayasa.com", font=fuente_datos, fill="black")
 
