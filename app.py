@@ -51,18 +51,20 @@ if submit:
             draw.text((x_puesto, 60), puesto, font=fuente_puesto, fill="black")
             
             # --- ALINEACIÓN DE DATOS DE CONTACTO ---
-            # Acercamos el texto a los íconos (X=420) y los subimos para no pisar el pie de página
             x_datos = 365       
+            y_inicial = 100  # Altura inicial (primer renglón). Súbelo o bájalo para mover todo el bloque.
+            espaciado = 26   # Separación exacta entre cada renglón.
+            
             # Teléfono fijo hardcodeado (ya no se pide en el formulario)
-            draw.text((x_datos, 95), "921 215-7017/18/21", font=fuente_datos, fill="black")
+            draw.text((x_datos, y_inicial), "921 215-7017/18/21", font=fuente_datos, fill="black")
             
             # Extensión / Móvil
             if telefono_movil_ext:
-                draw.text((x_datos, 125), telefono_movil_ext, font=fuente_datos, fill="black")
+                draw.text((x_datos, y_inicial + espaciado), telefono_movil_ext, font=fuente_datos, fill="black")
                 
             # Correo y Web
-            draw.text((x_datos, 155), correo, font=fuente_datos, fill="black")
-            draw.text((x_datos, 185), "www.grupoayasa.com", font=fuente_datos, fill="black")
+            draw.text((x_datos, y_inicial + (espaciado * 2)), correo, font=fuente_datos, fill="black")
+            draw.text((x_datos, y_inicial + (espaciado * 3)), "www.grupoayasa.com", font=fuente_datos, fill="black")
 
             # Guardar y mostrar
             buf = io.BytesIO()
