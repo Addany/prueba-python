@@ -52,7 +52,7 @@ if submit:
             
             # --- ALINEACIÓN DE DATOS DE CONTACTO ---
             x_datos = 365       
-            y_inicial = 101 # Altura inicial (primer renglón). Súbelo o bájalo para mover todo el bloque.
+            y_inicial = 105 # Altura inicial (primer renglón). Súbelo o bájalo para mover todo el bloque.
             espaciado = 26   # Separación exacta entre cada renglón.
             
             # Teléfono fijo hardcodeado (ya no se pide en el formulario)
