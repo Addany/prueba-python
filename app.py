@@ -6,7 +6,7 @@ import os
 st.set_page_config(page_title="Generador de Firmas - Grupo AYASA", page_icon="📝")
 
 st.title("Generador de Firma de Correo")
-st.write("Complete sus datos para generar la firma institucional con el formato oficial.")
+st.write("Complete sus datos para generar la firma empresarial con el formato oficial.")
 
 # Formulario
 with st.form("formulario_firma"):
@@ -71,7 +71,7 @@ if submit:
             # --- CONCATENACIÓN DE TELÉFONO FIJO Y EXTENSIÓN ---
             # Agrega "EXT." al número fijo si el usuario escribió una extensión
             if num_extension:
-                texto_fijo_ext = f"921 215-7017/18/21 EXT. {num_extension}"
+                texto_fijo_ext = f"921 215-7017/18/21 ext. {num_extension}"
             else:
                 texto_fijo_ext = "921 215-7017/18/21"
 
