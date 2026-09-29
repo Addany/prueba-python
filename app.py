@@ -27,7 +27,7 @@ with st.form("formulario_firma"):
     submit = st.form_submit_button("Generar Firma")
 
 if submit:
-    # Validación simultánea para detectar exactamente qué campos faltan
+    # Validaciones independientes para cada campo faltante
     campos_faltantes = []
     if not nombre:
         campos_faltantes.append("Título y Nombre completo")
@@ -68,27 +68,24 @@ if submit:
             draw.text((x_nombre, 30), nombre, font=fuente_nombre, fill="black")
             draw.text((x_puesto, 60), puesto, font=fuente_puesto, fill="black")
             
-            # --- CONCATENACIÓN DE TELÉFONO Y EXTENSIÓN ---
-            if telefono_movil and num_extension:
-                texto_telefono_ext = f"{telefono_movil} #EXT {num_extension}"
-            elif telefono_movil:
-                texto_telefono_ext = telefono_movil
-            elif num_extension:
-                texto_telefono_ext = f"#EXT {num_extension}"
+            # --- CONCATENACIÓN DE TELÉFONO FIJO Y EXTENSIÓN ---
+            # Agrega "EXT." al número fijo si el usuario escribió una extensión
+            if num_extension:
+                texto_fijo_ext = f"921 215-7017/18/21 EXT. {num_extension}"
             else:
-                texto_telefono_ext = ""
+                texto_fijo_ext = "921 215-7017/18/21"
 
             # --- ALINEACIÓN DE DATOS DE CONTACTO (Intactas) ---
             x_datos = 365       
             y_inicial = 103 
             espaciado = 26 
             
-            # 1. Teléfono fijo corporativo
-            draw.text((x_datos, y_inicial), "921 215-7017/18/21", font=fuente_datos, fill="black")
+            # 1. Teléfono fijo corporativo con su extensión al lado
+            draw.text((x_datos, y_inicial), texto_fijo_ext, font=fuente_datos, fill="black")
             
-            # 2. Celular y Extensión juntos
-            if texto_telefono_ext:
-                draw.text((x_datos, y_inicial + espaciado), texto_telefono_ext, font=fuente_datos, fill="black")
+            # 2. Celular (Se imprime solo en el segundo renglón si se proporciona)
+            if telefono_movil:
+                draw.text((x_datos, y_inicial + espaciado), telefono_movil, font=fuente_datos, fill="black")
                 
             # 3. Correo y Web
             draw.text((x_datos, y_inicial + (espaciado * 2)), correo, font=fuente_datos, fill="black")
