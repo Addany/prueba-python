@@ -8,6 +8,7 @@ st.set_page_config(page_title="Generador de Firmas - Grupo AYASA", page_icon="�
 st.title("Generador de Firma de Correo")
 st.write("Complete sus datos para generar la firma institucional con el formato oficial.")
 
+# Formulario (ya sin el teléfono fijo, porque se agregó al código como texto fijo)
 with st.form("formulario_firma"):
     nombre = st.text_input("Nombre completo", placeholder="Ej. Ing. Arturo Villegas Garcia")
     puesto = st.text_input("Puesto de trabajo", placeholder="Ej. Coordinador de sistemas")
@@ -35,34 +36,34 @@ if submit:
                 st.stop()
 
             # --- CENTRADO DINÁMICO (Nombre y Puesto) ---
+            # El panel derecho de la firma va aprox. de X=380 a X=797. Su centro visual es ~588.
             centro_x = 588
             
+            # Calculamos el ancho de las palabras para centrarlas perfectamente
             ancho_nombre = draw.textlength(nombre, font=fuente_nombre)
             ancho_puesto = draw.textlength(puesto, font=fuente_puesto)
             
             x_nombre = centro_x - (ancho_nombre / 2)
             x_puesto = centro_x - (ancho_puesto / 2)
 
+            # Imprimimos el nombre y el puesto en sus nuevas posiciones centradas
             draw.text((x_nombre, 30), nombre, font=fuente_nombre, fill="black")
             draw.text((x_puesto, 60), puesto, font=fuente_puesto, fill="black")
             
             # --- ALINEACIÓN DE DATOS DE CONTACTO ---
-            x_datos = 425  # Posición horizontal respecto a los íconos
-            y_inicial = 112  # Bajamos el punto de inicio para alinear con el primer ícono
-            gap = 37  # Espaciado exacto entre cada renglón
+            # Acercamos el texto a los íconos (X=420) y los subimos para no pisar el pie de página
+            x_datos = 420 
             
-            # 1. Teléfono fijo
-            draw.text((x_datos, y_inicial), "921 215-7017/18/21", font=fuente_datos, fill="black")
+            # Teléfono fijo hardcodeado (ya no se pide en el formulario)
+            draw.text((x_datos, 95), "921 215-7017/18/21", font=fuente_datos, fill="black")
             
-            # 2. Extensión / Móvil
+            # Extensión / Móvil
             if telefono_movil_ext:
-                draw.text((x_datos, y_inicial + gap), telefono_movil_ext, font=fuente_datos, fill="black")
+                draw.text((x_datos, 125), telefono_movil_ext, font=fuente_datos, fill="black")
                 
-            # 3. Correo
-            draw.text((x_datos, y_inicial + (gap * 2)), correo, font=fuente_datos, fill="black")
-            
-            # 4. Web
-            draw.text((x_datos, y_inicial + (gap * 3)), "www.grupoayasa.com", font=fuente_datos, fill="black")
+            # Correo y Web
+            draw.text((x_datos, 155), correo, font=fuente_datos, fill="black")
+            draw.text((x_datos, 185), "www.grupoayasa.com", font=fuente_datos, fill="black")
 
             # Guardar y mostrar
             buf = io.BytesIO()
