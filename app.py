@@ -20,7 +20,7 @@ with st.form("formulario_firma"):
     with col1:
         telefono_movil = st.text_input("Número de Celular si es que aplica", placeholder="Ej. 921785748")
     with col2:
-        num_extension = st.text_input("Número de Extensión si es que aplica","Ej. 530")
+        num_extension = st.text_input("Número de Extensión", placeholder="Ej. 530")
         
     correo = st.text_input("Correo corporativo", placeholder="Ej. sistemas@grupoayasa.com")
     
