@@ -10,13 +10,13 @@ st.write("Complete sus datos para generar la firma institucional con el formato 
 
 # Formulario con los campos separados para teléfono y extensión
 with st.form("formulario_firma"):
-    nombre = st.text_input("Nombre completo", placeholder="Ej. Ing. Addan Yerena Lopez")
+    nombre = st.text_input("Titulo y Nombre completo", placeholder="Ej. Ing. Addan Yerena Lopez")
     puesto = st.text_input("Puesto de trabajo", placeholder="Ej. Auxiliar de Sistemas")
     
     # Campos separados para número y extensión
     col1, col2 = st.columns(2)
     with col1:
-        telefono_movil = st.text_input("Número de serie / Celular", placeholder="Ej. 9211722326")
+        telefono_movil = st.text_input("Número de Celular si es que aplica", placeholder="Ej. 9211722326")
     with col2:
         num_extension = st.text_input("Número de Extensión", placeholder="Ej. 530")
         
