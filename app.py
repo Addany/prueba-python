@@ -8,12 +8,14 @@ st.set_page_config(page_title="Generador de Firmas - Grupo AYASA", page_icon="�
 st.title("Generador de Firma de Correo")
 st.write("Complete sus datos para generar la firma institucional con el formato oficial.")
 
-# Formulario con los campos separados para teléfono y extensión
+# Formulario
 with st.form("formulario_firma"):
-    nombre = st.text_input("Titulo y Nombre completo", placeholder="Ej. Ing. Arturo Villegas Garcia")
-    puesto = st.text_input("Puesto de trabajo", placeholder="Ej.Coordinador Sistemas")
+    nombre = st.text_input(
+        "Título y Nombre completo", 
+        placeholder="Ej. Ing. Arturo Villegas Garcia"
+    )
+    puesto = st.text_input("Puesto de trabajo", placeholder="Ej. Coordinador Sistemas")
     
-    # Campos separados para número y extensión
     col1, col2 = st.columns(2)
     with col1:
         telefono_movil = st.text_input("Número de Celular si es que aplica", placeholder="Ej. 921785748")
@@ -25,7 +27,14 @@ with st.form("formulario_firma"):
     submit = st.form_submit_button("Generar Firma")
 
 if submit:
-    if nombre and puesto and correo:
+    # Validaciones independientes para cada campo faltante
+    if not nombre:
+        st.warning("Por favor, ingrese el **Título y Nombre completo**.")
+    elif not puesto:
+        st.warning("Por favor, ingrese el **Puesto de trabajo**.")
+    elif not correo:
+        st.warning("Por favor, ingrese el **Correo corporativo**.")
+    else:
         try:
             if not os.path.exists("plantilla_base.png"):
                 st.error("Error: No se encontró 'plantilla_base.png'.")
@@ -42,7 +51,7 @@ if submit:
                 st.error("Error: No se encontraron las fuentes Arial.")
                 st.stop()
 
-            # --- CENTRADO DINÁMICO (Nombre y Puesto) ---
+            # --- CENTRADO DINÁMICO (Nombre y Puesto con Título) ---
             centro_x = 588
             
             ancho_nombre = draw.textlength(nombre, font=fuente_nombre)
@@ -54,8 +63,7 @@ if submit:
             draw.text((x_nombre, 30), nombre, font=fuente_nombre, fill="black")
             draw.text((x_puesto, 60), puesto, font=fuente_puesto, fill="black")
             
-            # --- CONSTRUCCIÓN DEL SEGUNDO RENGLÓN AUTOMÁTICO ---
-            # Si el usuario llena ambos o solo uno, se arma el texto combinando el número y la extensión con #EXT
+            # --- CONCATENACIÓN DE TELÉFONO Y EXTENSIÓN ---
             if telefono_movil and num_extension:
                 texto_telefono_ext = f"{telefono_movil} #EXT {num_extension}"
             elif telefono_movil:
@@ -65,15 +73,15 @@ if submit:
             else:
                 texto_telefono_ext = ""
 
-            # --- ALINEACIÓN DE DATOS DE CONTACTO ---
+            # --- ALINEACIÓN DE DATOS DE CONTACTO (Intactas) ---
             x_datos = 365       
-            y_inicial = 103 
-            espaciado = 26 
+            y_inicial = 105 
+            espaciado = 24 
             
-            # 1. Teléfono fijo corporativo (fijo)
+            # 1. Teléfono fijo corporativo
             draw.text((x_datos, y_inicial), "921 215-7017/18/21", font=fuente_datos, fill="black")
             
-            # 2. Celular/Serie + #EXT automático
+            # 2. Celular y Extensión juntos
             if texto_telefono_ext:
                 draw.text((x_datos, y_inicial + espaciado), texto_telefono_ext, font=fuente_datos, fill="black")
                 
@@ -87,7 +95,7 @@ if submit:
             byte_im = buf.getvalue()
 
             st.success("¡Firma generada con éxito!")
-            st.image(byte_im, caption=f"Firma_{nombre.split()[0]}.png")
+            st.image(byte_im, caption=f"Firma_{nombre.split()[-1]}.png")
 
             st.download_button(
                 label="Descargar Firma PNG",
@@ -98,5 +106,3 @@ if submit:
             
         except Exception as e:
             st.error(f"Error inesperado: {e}")
-    else:
-        st.warning("Complete el Nombre, Puesto y Correo.")
