@@ -52,8 +52,7 @@ if submit:
             
             # --- ALINEACIÓN DE DATOS DE CONTACTO ---
             # Acercamos el texto a los íconos (X=420) y los subimos para no pisar el pie de página
-            x_datos = 350
-            
+            x_datos = 370          
             # Teléfono fijo hardcodeado (ya no se pide en el formulario)
             draw.text((x_datos, 95), "921 215-7017/18/21", font=fuente_datos, fill="black")
             
