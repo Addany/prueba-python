@@ -75,8 +75,8 @@ if submit:
 
             # --- ALINEACIÓN DE DATOS DE CONTACTO (Intactas) ---
             x_datos = 365       
-            y_inicial = 105 
-            espaciado = 24 
+            y_inicial = 103 
+            espaciado = 26 
             
             # 1. Teléfono fijo corporativo
             draw.text((x_datos, y_inicial), "921 215-7017/18/21", font=fuente_datos, fill="black")
