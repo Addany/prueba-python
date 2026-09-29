@@ -20,14 +20,14 @@ with st.form("formulario_firma"):
     with col1:
         telefono_movil = st.text_input("Número de Celular si es que aplica", placeholder="Ej. 921785748")
     with col2:
-        num_extension = st.text_input("Número de Extensión", placeholder="Ej. 530")
+        num_extension = st.text_input("Número de Extensión si es que aplica","Ej. 530")
         
     correo = st.text_input("Correo corporativo", placeholder="Ej. sistemas@grupoayasa.com")
     
     submit = st.form_submit_button("Generar Firma")
 
 if submit:
-    # Validación simultánea para campos obligatorios
+    # Validación simultánea para detectar exactamente qué campos faltan
     campos_faltantes = []
     if not nombre:
         campos_faltantes.append("Título y Nombre completo")
@@ -37,6 +37,7 @@ if submit:
         campos_faltantes.append("Correo corporativo")
 
     if campos_faltantes:
+        # Muestra una advertencia detallada indicando todos los campos que el usuario dejó vacíos
         st.warning(f"Por favor, complete los siguientes campos obligatorios: **{', '.join(campos_faltantes)}**.")
     else:
         try:
@@ -67,7 +68,7 @@ if submit:
             draw.text((x_nombre, 30), nombre, font=fuente_nombre, fill="black")
             draw.text((x_puesto, 60), puesto, font=fuente_puesto, fill="black")
             
-            # --- CONCATENACIÓN DINÁMICA DE TELÉFONO Y EXTENSIÓN ---
+            # --- CONCATENACIÓN DE TELÉFONO Y EXTENSIÓN ---
             if telefono_movil and num_extension:
                 texto_telefono_ext = f"{telefono_movil} #EXT {num_extension}"
             elif telefono_movil:
@@ -77,26 +78,21 @@ if submit:
             else:
                 texto_telefono_ext = ""
 
-            # --- ALINEACIÓN DINÁMICA DE DATOS DE CONTACTO (Sin dejar huecos) ---
+            # --- ALINEACIÓN DE DATOS DE CONTACTO (Intactas) ---
             x_datos = 365       
-            y_actual = 103 
+            y_inicial = 103 
             espaciado = 26 
             
-            # 1. Teléfono fijo corporativo (Siempre va)
-            draw.text((x_datos, y_actual), "921 215-7017/18/21", font=fuente_datos, fill="black")
-            y_actual += espaciado
+            # 1. Teléfono fijo corporativo
+            draw.text((x_datos, y_inicial), "921 215-7017/18/21", font=fuente_datos, fill="black")
             
-            # 2. Celular y Extensión (Solo se dibuja y baja el renglón si el usuario escribió algo)
+            # 2. Celular y Extensión juntos
             if texto_telefono_ext:
-                draw.text((x_datos, y_actual), texto_telefono_ext, font=fuente_datos, fill="black")
-                y_actual += espaciado
+                draw.text((x_datos, y_inicial + espaciado), texto_telefono_ext, font=fuente_datos, fill="black")
                 
-            # 3. Correo (Se ajusta automáticamente al espacio disponible)
-            draw.text((x_datos, y_actual), correo, font=fuente_datos, fill="black")
-            y_actual += espaciado
-            
-            # 4. Web
-            draw.text((x_datos, y_actual), "www.grupoayasa.com", font=fuente_datos, fill="black")
+            # 3. Correo y Web
+            draw.text((x_datos, y_inicial + (espaciado * 2)), correo, font=fuente_datos, fill="black")
+            draw.text((x_datos, y_inicial + (espaciado * 3)), "www.grupoayasa.com", font=fuente_datos, fill="black")
 
             # Guardar y mostrar
             buf = io.BytesIO()
