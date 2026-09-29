@@ -8,12 +8,12 @@ st.set_page_config(page_title="Generador de Firmas - Grupo AYASA", page_icon="�
 st.title("Generador de Firma de Correo")
 st.write("Complete sus datos para generar la firma institucional con el formato oficial.")
 
+# Formulario (ya sin el teléfono fijo, porque se agregó al código como texto fijo)
 with st.form("formulario_firma"):
-    nombre = st.text_input("Nombre completo", placeholder="Ej. Lic. Alfredo César Montes Patricio")
-    puesto = st.text_input("Puesto de trabajo", placeholder="Ej. Asistente de Recursos Humanos")
-    telefono_fijo = st.text_input("Teléfono fijo", value="921 215-7017/18/21")
-    telefono_movil_ext = st.text_input("Teléfono móvil o Extensión", placeholder="Ej. 921 215 7017 EXT.204")
-    correo = st.text_input("Correo corporativo", placeholder="Ej. capacitacion@grupoayasa.com")
+    nombre = st.text_input("Nombre completo", placeholder="Ej. Ing. Arturo Villegas Garcia")
+    puesto = st.text_input("Puesto de trabajo", placeholder="Ej. Coordinador de sistemas")
+    telefono_movil_ext = st.text_input("Teléfono móvil o Extensión", placeholder="Ej. 560 o 921 123 4567")
+    correo = st.text_input("Correo corporativo", placeholder="Ej. sistemas@grupoayasa.com")
     
     submit = st.form_submit_button("Generar Firma")
 
@@ -28,30 +28,42 @@ if submit:
             draw = ImageDraw.Draw(img)
             
             try:
-                # Tamaños de fuente ajustados a la imagen original
-                fuente_nombre = ImageFont.truetype("arialbd.ttf", 22) # Negrita más grande
-                fuente_puesto = ImageFont.truetype("arial.ttf", 16)   # Normal
-                fuente_datos = ImageFont.truetype("arialbd.ttf", 18)  # Negrita para los datos
+                fuente_nombre = ImageFont.truetype("arialbd.ttf", 22)
+                fuente_puesto = ImageFont.truetype("arial.ttf", 16)
+                fuente_datos = ImageFont.truetype("arialbd.ttf", 18)
             except OSError:
                 st.error("Error: No se encontraron las fuentes Arial.")
                 st.stop()
 
-            # --- COORDENADAS AJUSTADAS ---
-            # X=470 alinea el texto justo a la derecha de los íconos
-            x_datos = 470 
+            # --- CENTRADO DINÁMICO (Nombre y Puesto) ---
+            # El panel derecho de la firma va aprox. de X=380 a X=797. Su centro visual es ~588.
+            centro_x = 588
             
-            # 1. Nombre y Puesto (centrados visualmente en el bloque superior)
-            draw.text((450, 30), nombre, font=fuente_nombre, fill="black")
-            draw.text((490, 60), puesto, font=fuente_puesto, fill="black")
+            # Calculamos el ancho de las palabras para centrarlas perfectamente
+            ancho_nombre = draw.textlength(nombre, font=fuente_nombre)
+            ancho_puesto = draw.textlength(puesto, font=fuente_puesto)
             
-            # 2. Datos de contacto alineados a los íconos (ajusta la Y si quedan muy arriba o abajo)
-            draw.text((x_datos, 120), telefono_fijo, font=fuente_datos, fill="black")
+            x_nombre = centro_x - (ancho_nombre / 2)
+            x_puesto = centro_x - (ancho_puesto / 2)
+
+            # Imprimimos el nombre y el puesto en sus nuevas posiciones centradas
+            draw.text((x_nombre, 30), nombre, font=fuente_nombre, fill="black")
+            draw.text((x_puesto, 60), puesto, font=fuente_puesto, fill="black")
             
+            # --- ALINEACIÓN DE DATOS DE CONTACTO ---
+            # Acercamos el texto a los íconos (X=420) y los subimos para no pisar el pie de página
+            x_datos = 420 
+            
+            # Teléfono fijo hardcodeado (ya no se pide en el formulario)
+            draw.text((x_datos, 95), "921 215-7017/18/21", font=fuente_datos, fill="black")
+            
+            # Extensión / Móvil
             if telefono_movil_ext:
-                draw.text((x_datos, 155), telefono_movil_ext, font=fuente_datos, fill="black")
+                draw.text((x_datos, 125), telefono_movil_ext, font=fuente_datos, fill="black")
                 
-            draw.text((x_datos, 190), correo, font=fuente_datos, fill="black")
-            draw.text((x_datos, 225), "www.grupoayasa.com", font=fuente_datos, fill="black")
+            # Correo y Web
+            draw.text((x_datos, 155), correo, font=fuente_datos, fill="black")
+            draw.text((x_datos, 185), "www.grupoayasa.com", font=fuente_datos, fill="black")
 
             # Guardar y mostrar
             buf = io.BytesIO()
