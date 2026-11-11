@@ -11,16 +11,16 @@ st.write("Complete sus datos para generar la firma empresarial con el formato of
 # Formulario
 with st.form("formulario_firma"):
     nombre = st.text_input(
-        "Título y Nombre completo", 
+        "Título y nombre completo", 
         placeholder="Ej. Ing. Arturo Villegas Garcia"
     )
     puesto = st.text_input("Puesto de trabajo", placeholder="Ej. Coordinador Sistemas")
     
     col1, col2 = st.columns(2)
     with col1:
-        telefono_movil = st.text_input("Número de Celular si es que aplica", placeholder="Ej. 921785748")
+        telefono_movil = st.text_input("Número de celular si es que aplica", placeholder="Ej. 921785748")
     with col2:
-        num_extension = st.text_input("Número de Extensión", placeholder="Ej. 530")
+        num_extension = st.text_input("Número de extensión", placeholder="Ej. 530")
         
     correo = st.text_input("Correo corporativo", placeholder="Ej. sistemas@grupoayasa.com")
     
@@ -30,7 +30,7 @@ if submit:
     # Validaciones independientes para cada campo faltante
     campos_faltantes = []
     if not nombre:
-        campos_faltantes.append("Título y Nombre completo")
+        campos_faltantes.append("Título y nombre completo")
     if not puesto:
         campos_faltantes.append("Puesto de trabajo")
     if not correo:
